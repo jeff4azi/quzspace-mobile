@@ -1,19 +1,26 @@
 import '../global.css';
-import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useColorScheme } from 'react-native';
+import React from 'react';
+import { Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
+import { PlanProvider } from '@/context/PlanContext';
 
-import { AnimatedSplashOverlay } from '@/components/animated-icon';
-import AppTabs from '@/components/app-tabs';
-
-SplashScreen.preventAutoHideAsync();
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+export default function RootLayout() {
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AnimatedSplashOverlay />
-      <AppTabs />
-    </ThemeProvider>
+    <PlanProvider>
+      <StatusBar style="dark" />
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          contentStyle: { backgroundColor: '#f1f1f1' },
+          animation: 'fade_from_bottom',
+        }}
+      >
+        <Stack.Screen name="(public)" options={{ headerShown: false }} />
+        <Stack.Screen name="(app)" options={{ headerShown: false }} />
+        <Stack.Screen name="spaces/[id]" options={{ headerShown: false }} />
+        <Stack.Screen name="quiz/[quizId]" options={{ headerShown: false }} />
+        <Stack.Screen name="s/[shareCode]" options={{ headerShown: false }} />
+      </Stack>
+    </PlanProvider>
   );
 }

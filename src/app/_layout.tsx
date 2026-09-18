@@ -2,11 +2,10 @@ import '../global.css';
 import React from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { PlanProvider } from '@/context/PlanContext';
 
 export default function RootLayout() {
   return (
-    <PlanProvider>
+    <>
       <StatusBar style="dark" />
       <Stack
         screenOptions={{
@@ -21,6 +20,6 @@ export default function RootLayout() {
         <Stack.Screen name="quiz/[quizId]" options={{ headerShown: false }} />
         <Stack.Screen name="s/[shareCode]" options={{ headerShown: false }} />
       </Stack>
-    </PlanProvider>
+    </>
   );
 }

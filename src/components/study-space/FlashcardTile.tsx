@@ -177,8 +177,16 @@ export function FlashcardTile({
           </View>
 
           {/* Answer Body */}
-          <View className="flex-1 justify-center items-center py-2">
-            <Text className="text-sm font-medium text-gray-200 text-center leading-relaxed">
+          <View className="flex-1 justify-center items-center py-2 px-2">
+            <Text
+              style={{
+                color: '#f9fafb',
+                fontSize: 13,
+                fontWeight: '500',
+                lineHeight: 20,
+                textAlign: 'center',
+              }}
+            >
               {card.back}
             </Text>
           </View>
@@ -190,9 +198,11 @@ export function FlashcardTile({
               activeOpacity={0.7}
             >
               <Text
-                className={`text-xs font-bold ${
-                  card.mastered ? 'text-emerald-400' : 'text-amber-300'
-                }`}
+                style={{
+                  fontSize: 12,
+                  fontWeight: '700',
+                  color: card.mastered ? '#34d399' : '#fde047',
+                }}
               >
                 {card.mastered ? '✓ Mastered (tap to unmark)' : '+ Mark as Mastered'}
               </Text>
@@ -200,7 +210,7 @@ export function FlashcardTile({
 
             <View className="flex-row items-center gap-1">
               <Icon name="sync-outline" size={13} color="#9ca3af" />
-              <Text className="text-[11px] font-medium text-gray-400">
+              <Text style={{ fontSize: 11, fontWeight: '500', color: '#9ca3af' }}>
                 Flip back
               </Text>
             </View>

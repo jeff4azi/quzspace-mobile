@@ -231,8 +231,16 @@ export function FlashcardStudyMode({
             </View>
 
             {/* Answer Content */}
-            <View className="flex-1 justify-center items-center py-3 px-2">
-              <Text className="text-sm font-medium text-gray-200 text-center leading-relaxed">
+            <View className="flex-1 justify-center items-center py-3 px-3">
+              <Text
+                style={{
+                  color: '#f9fafb',
+                  fontSize: 15,
+                  fontWeight: '500',
+                  lineHeight: 24,
+                  textAlign: 'center',
+                }}
+              >
                 {currentCard.back}
               </Text>
             </View>

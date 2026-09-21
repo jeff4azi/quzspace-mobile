@@ -37,10 +37,8 @@ export default function SpaceQuizTab() {
           <Text className="text-xl font-extrabold text-brand tracking-tight">
             Quizzes
           </Text>
-          <View className="px-2.5 py-0.5 rounded-full bg-brand/10 border border-brand/20">
-            <Text className="text-xs font-bold text-brand">
-              {quizzes.length} {quizzes.length === 1 ? 'Quiz' : 'Quizzes'}
-            </Text>
+          <View className="self-center px-2.5 py-1 rounded-full bg-brand/10 border border-brand/20">
+            <Text className="text-xs font-bold text-brand">{`${quizzes.length} ${quizzes.length === 1 ? 'Quiz' : 'Quizzes'}`}</Text>
           </View>
         </View>
 

@@ -69,10 +69,8 @@ export default function SpaceFlashcardsTab() {
             <Text className="text-xl font-extrabold text-brand tracking-tight">
               Flashcards
             </Text>
-            <View className="px-2.5 py-0.5 rounded-full bg-brand/10 border border-brand/20">
-              <Text className="text-xs font-bold text-brand">
-                {cards.length} cards · <Text className="text-emerald-700">{masteredCount} mastered</Text>
-              </Text>
+            <View className="self-center px-2.5 py-1 rounded-full bg-brand/10 border border-brand/20">
+              <Text className="text-xs font-bold text-brand">{`${cards.length} cards · `}<Text className="text-emerald-700">{`${masteredCount} mastered`}</Text></Text>
             </View>
           </View>
 

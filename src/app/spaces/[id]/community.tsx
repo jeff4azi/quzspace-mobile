@@ -52,16 +52,33 @@ export default function SpaceCommunityTab() {
       showsVerticalScrollIndicator={false}
     >
       {/* Header Row */}
-      <View className="flex-row items-center justify-between mb-5 flex-wrap gap-2">
-        <View>
-          <View className="flex-row items-center gap-2">
+      <View className="flex-row items-center justify-between mb-5 gap-3">
+        <View className="flex-1 min-w-0">
+          <View className="flex-row items-center gap-2 flex-wrap">
             <Text className="text-xl font-extrabold text-brand tracking-tight">
               Community
             </Text>
-            <View className="px-2.5 py-0.5 rounded-full bg-brand/10 border border-brand/20">
-              <Text className="text-xs font-bold text-brand">
-                {totalMembers} learners
-              </Text>
+            <View
+              style={{
+                alignSelf: 'center',
+                paddingHorizontal: 10,
+                paddingVertical: 4,
+                borderRadius: 999,
+                backgroundColor: 'rgba(36, 32, 33, 0.08)',
+                borderWidth: 1,
+                borderColor: 'rgba(36, 32, 33, 0.15)',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontWeight: '700',
+                  color: '#242021',
+                  includeFontPadding: false,
+                }}
+              >{`${totalMembers} learners`}</Text>
             </View>
           </View>
           <Text className="text-xs text-gray font-medium mt-0.5">
@@ -73,11 +90,11 @@ export default function SpaceCommunityTab() {
         <TouchableOpacity
           onPress={() => setIsInviteModalOpen(true)}
           activeOpacity={0.8}
-          className="flex-row items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-brand active:bg-darker shadow-2xs"
+          className="flex-row items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-brand active:bg-darker shadow-2xs shrink-0"
         >
           <Icon name="person-add-outline" size={15} color="#f1f1f1" />
           <Text className="text-xs font-bold text-light">
-            Invite Collaborators
+            Invite
           </Text>
         </TouchableOpacity>
       </View>

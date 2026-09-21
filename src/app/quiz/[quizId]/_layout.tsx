@@ -11,6 +11,7 @@ export default function QuizLayout() {
     >
       <Stack.Screen name="index" options={{ title: 'Taking Quiz' }} />
       <Stack.Screen name="results" options={{ title: 'Quiz Results' }} />
+      <Stack.Screen name="history" options={{ title: 'Past Scores' }} />
     </Stack>
   );
 }

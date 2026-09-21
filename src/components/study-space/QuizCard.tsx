@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Icon } from '@/components/ui/Icon';
 import { QuizItem } from '@/data/mockQuizzes';
+import { QuizLeaderboardPreview } from './QuizLeaderboardPreview';
 
 interface QuizCardProps {
   quiz: QuizItem;
@@ -49,7 +50,7 @@ export function QuizCard({ quiz, spaceId = 'cs-301' }: QuizCardProps) {
   };
 
   const handleViewResults = () => {
-    router.push(`/quiz/${quiz.id}/results` as any);
+    router.push(`/quiz/${quiz.id}/history` as any);
   };
 
   return (
@@ -83,7 +84,7 @@ export function QuizCard({ quiz, spaceId = 'cs-301' }: QuizCardProps) {
       </Text>
 
       {/* Attempts Metadata */}
-      <View className="flex-row items-center gap-3 mb-4">
+      <View className="flex-row items-center gap-3 mb-3">
         {quiz.attemptsCount > 0 ? (
           <Text className="text-xs font-medium text-gray-500">
             {quiz.attemptsCount} {quiz.attemptsCount === 1 ? 'attempt' : 'attempts'} completed
@@ -93,6 +94,11 @@ export function QuizCard({ quiz, spaceId = 'cs-301' }: QuizCardProps) {
             Not attempted yet
           </Text>
         )}
+      </View>
+
+      {/* Per-Quiz Leaderboard Preview */}
+      <View className="mb-4">
+        <QuizLeaderboardPreview leaderboard={quiz.leaderboard} />
       </View>
 
       {/* Best Score Bar or Unattempted State */}

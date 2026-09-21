@@ -7,6 +7,16 @@ export interface LeaderboardEntry {
   completedAt: string;
 }
 
+export interface QuizAttempt {
+  id: string;
+  attemptNumber: number;
+  scorePercent: number;
+  correctCount: number;
+  totalQuestions: number;
+  timeSpent: string;
+  completedAt: string;
+}
+
 export interface QuizItem {
   id: string;
   title: string;
@@ -15,6 +25,7 @@ export interface QuizItem {
   createdAt: string;
   bestScore: number | null;
   attemptsCount: number;
+  history: QuizAttempt[];
   leaderboard: LeaderboardEntry[];
 }
 
@@ -27,6 +38,26 @@ export const mockQuizzes: QuizItem[] = [
     createdAt: '2 hours ago',
     bestScore: 85,
     attemptsCount: 2,
+    history: [
+      {
+        id: 'att-101-2',
+        attemptNumber: 2,
+        scorePercent: 85,
+        correctCount: 7,
+        totalQuestions: 8,
+        timeSpent: '6m 45s',
+        completedAt: '2 hours ago',
+      },
+      {
+        id: 'att-101-1',
+        attemptNumber: 1,
+        scorePercent: 62,
+        correctCount: 5,
+        totalQuestions: 8,
+        timeSpent: '8m 12s',
+        completedAt: 'Yesterday at 4:30 PM',
+      },
+    ],
     leaderboard: [
       {
         id: 'p-1',
@@ -62,6 +93,35 @@ export const mockQuizzes: QuizItem[] = [
     createdAt: 'Yesterday',
     bestScore: 90,
     attemptsCount: 3,
+    history: [
+      {
+        id: 'att-102-3',
+        attemptNumber: 3,
+        scorePercent: 90,
+        correctCount: 9,
+        totalQuestions: 10,
+        timeSpent: '9m 10s',
+        completedAt: 'Yesterday at 7:15 PM',
+      },
+      {
+        id: 'att-102-2',
+        attemptNumber: 2,
+        scorePercent: 70,
+        correctCount: 7,
+        totalQuestions: 10,
+        timeSpent: '11m 30s',
+        completedAt: '2 days ago',
+      },
+      {
+        id: 'att-102-1',
+        attemptNumber: 1,
+        scorePercent: 50,
+        correctCount: 5,
+        totalQuestions: 10,
+        timeSpent: '13m 45s',
+        completedAt: '3 days ago',
+      },
+    ],
     leaderboard: [
       {
         id: 'p-1',
@@ -89,6 +149,7 @@ export const mockQuizzes: QuizItem[] = [
     createdAt: 'Aug 10, 2026',
     bestScore: null,
     attemptsCount: 0,
+    history: [],
     leaderboard: [],
   },
   {
@@ -99,6 +160,17 @@ export const mockQuizzes: QuizItem[] = [
     createdAt: 'Aug 05, 2026',
     bestScore: 70,
     attemptsCount: 1,
+    history: [
+      {
+        id: 'att-104-1',
+        attemptNumber: 1,
+        scorePercent: 70,
+        correctCount: 6,
+        totalQuestions: 8,
+        timeSpent: '7m 20s',
+        completedAt: 'Aug 05, 2026',
+      },
+    ],
     leaderboard: [
       {
         id: 'p-1',

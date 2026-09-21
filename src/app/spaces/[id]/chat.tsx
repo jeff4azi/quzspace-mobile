@@ -5,9 +5,8 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
 } from 'react-native';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Icon } from '@/components/ui/Icon';
 import { ChatMessage } from '@/components/study-space/ChatMessage';
@@ -26,7 +25,6 @@ export default function SpaceChatTab() {
   const [isTyping, setIsTyping] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
 
-  // Auto scroll to bottom
   const scrollToBottom = (animated = true) => {
     setTimeout(() => {
       scrollViewRef.current?.scrollToEnd({ animated });
@@ -56,7 +54,6 @@ export default function SpaceChatTab() {
     setIsTyping(true);
     scrollToBottom(true);
 
-    // Simulate AI response after 1.2s delay
     setTimeout(() => {
       const randomResponse =
         cannedResponses[Math.floor(Math.random() * cannedResponses.length)];
@@ -81,10 +78,12 @@ export default function SpaceChatTab() {
   };
 
   return (
+    // react-native-keyboard-controller's KeyboardAvoidingView reads exact
+    // keyboard height (incl. suggestion bar) from the native layer, so no
+    // manual Animated.Value or hardcoded offsets are needed.
     <KeyboardAvoidingView
+      behavior="padding"
       style={{ flex: 1, backgroundColor: '#f1f1f1' }}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
     >
       {/* Header Info Bar */}
       <View className="flex-row items-center justify-between px-5 py-2.5 bg-white border-b border-muted/20">
@@ -117,6 +116,8 @@ export default function SpaceChatTab() {
           paddingBottom: 24,
         }}
         showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+        onContentSizeChange={() => scrollToBottom(true)}
       >
         {messages.length === 0 ? (
           <ChatEmptyState onSelectPrompt={(p) => handleSend(p)} />
@@ -132,7 +133,7 @@ export default function SpaceChatTab() {
         style={{
           paddingHorizontal: 16,
           paddingTop: 10,
-          paddingBottom: Math.max(insets.bottom, 12) + 6,
+          paddingBottom: Math.max(insets.bottom, 12) + 4,
           backgroundColor: '#ffffff',
           borderTopWidth: 1,
           borderTopColor: 'rgba(174, 171, 172, 0.25)',

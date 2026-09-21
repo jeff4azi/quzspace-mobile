@@ -4,7 +4,7 @@ import {
   Text,
   TextInput,
   TextInputProps,
-  TouchableOpacity,
+  ViewStyle,
 } from 'react-native';
 
 export interface InputProps extends TextInputProps {
@@ -15,6 +15,7 @@ export interface InputProps extends TextInputProps {
   leftElement?: React.ReactNode;
   rightElement?: React.ReactNode;
   containerClassName?: string;
+  containerStyle?: ViewStyle;
 }
 
 export function Input({
@@ -25,6 +26,7 @@ export function Input({
   leftElement,
   rightElement,
   containerClassName = '',
+  containerStyle,
   onFocus,
   onBlur,
   editable = true,
@@ -33,24 +35,30 @@ export function Input({
   const [isFocused, setIsFocused] = useState(false);
 
   return (
-    <View className={`w-full space-y-1.5 ${containerClassName}`}>
+    <View
+      className={`w-full flex-col mb-5 ${containerClassName}`}
+      style={[{ marginBottom: 18 }, containerStyle]}
+    >
       {label && (
-        <Text className="text-xs font-bold uppercase tracking-wider text-brand mb-1">
-          {label} {required && <Text className="text-rose-500">*</Text>}
-        </Text>
+        <View className="flex-row items-center justify-between mb-2">
+          <Text className="text-xs font-bold uppercase tracking-wider text-brand">
+            {label}
+            {required && <Text className="text-rose-500 ml-1"> *</Text>}
+          </Text>
+        </View>
       )}
 
       <View
-        className={`flex-row items-center w-full rounded-xl border px-3.5 ${
+        className={`relative flex-row items-center w-full rounded-xl border px-3.5 transition-all ${
           editable ? 'bg-white' : 'bg-light/70'
         } ${
           error
-            ? 'border-rose-500'
+            ? 'border-rose-500 bg-rose-50/30'
             : isFocused
             ? 'border-brand'
-            : 'border-muted/30'
+            : 'border-muted/40'
         }`}
-        style={{ minHeight: 46 }}
+        style={{ minHeight: 48 }}
       >
         {leftElement && <View className="mr-2.5">{leftElement}</View>}
 
@@ -66,17 +74,23 @@ export function Input({
           }}
           placeholderTextColor="#aeabac"
           className="flex-1 text-sm font-medium text-brand py-2.5"
-          style={{ fontSize: 14, color: '#242021' }}
+          style={{ fontSize: 14, color: '#242021', paddingVertical: 10 }}
           {...props}
         />
 
-        {rightElement && <View className="ml-2.5">{rightElement}</View>}
+        {rightElement && (
+          <View className="ml-2.5 items-center justify-center">
+            {rightElement}
+          </View>
+        )}
       </View>
 
       {error ? (
-        <Text className="text-xs text-rose-600 font-medium mt-1">{error}</Text>
+        <Text className="text-xs text-rose-600 font-medium mt-1.5">
+          {error}
+        </Text>
       ) : helperText ? (
-        <Text className="text-xs text-gray mt-1">{helperText}</Text>
+        <Text className="text-xs text-gray/80 mt-1.5">{helperText}</Text>
       ) : null}
     </View>
   );

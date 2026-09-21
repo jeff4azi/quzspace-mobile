@@ -13,6 +13,7 @@ import { useRouter, Link } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
+import { GoogleIcon } from '@/components/ui/GoogleIcon';
 import { Icon } from '@/components/ui/Icon';
 
 export default function LoginScreen() {
@@ -91,144 +92,153 @@ export default function LoginScreen() {
         className="flex-1"
       >
         <ScrollView
-          contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
-          className="px-6 py-8"
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: 'center',
+            paddingVertical: 24,
+            paddingHorizontal: 16,
+          }}
           keyboardShouldPersistTaps="handled"
         >
-          <View className="w-full max-w-sm mx-auto space-y-6">
-            {/* Header / Logo Section */}
-            <View className="items-center mb-2">
-              <View className="flex-row items-center gap-2 mb-3">
+          <View className="w-full max-w-md mx-auto">
+            {/* Main Auth Card matching Web version */}
+            <View className="bg-white rounded-2xl shadow-sm border border-muted/30 p-6 sm:p-8">
+              {/* Header Section: Logo + Title + Subtitle */}
+              <View className="items-center mb-6">
                 <Image
                   source={require('@/assets/images/Quzspace_logo.png')}
-                  className="w-10 h-10"
+                  className="w-12 h-12 mb-3"
                   resizeMode="contain"
                 />
-                <Text className="text-2xl font-extrabold text-brand tracking-tight">
-                  Quz<Text className="text-gray font-semibold">Space</Text>
+                <Text className="text-2xl sm:text-3xl font-extrabold text-brand tracking-tight text-center mb-1.5">
+                  Welcome back
+                </Text>
+                <Text className="text-sm text-gray leading-relaxed text-center px-2">
+                  Log in to access your personalized AI study workspace.
                 </Text>
               </View>
 
-              <Text className="text-2xl font-extrabold text-brand tracking-tight text-center">
-                Welcome back
-              </Text>
-              <Text className="text-xs font-medium text-gray text-center mt-1 max-w-xs leading-relaxed">
-                Log in to access your personalized AI study workspace.
-              </Text>
-            </View>
-
-            {/* Auth Form Card */}
-            <View className="bg-white p-6 rounded-2xl border border-muted/30 shadow-sm space-y-4">
               {/* Decorative Google Button */}
               <Button
                 variant="google"
                 fullWidth
                 onPress={handleGoogleSignIn}
-                leftIcon={<Icon name="logo-google" size={18} color="#ea4335" />}
+                leftIcon={<GoogleIcon size={18} />}
+                className="py-3.5"
               >
                 Continue with Google
               </Button>
 
               {/* Divider */}
-              <View className="flex-row items-center justify-center my-3">
-                <View className="flex-1 h-[1px] bg-muted/30" />
-                <Text className="px-3 text-[11px] uppercase tracking-wider text-muted font-bold">
+              <View
+                className="relative flex-row items-center justify-center"
+                style={{ marginVertical: 20 }}
+              >
+                <View className="flex-1 h-[1px] bg-muted/20" />
+                <Text className="px-3 text-xs uppercase tracking-wider text-muted font-bold bg-white">
                   or
                 </Text>
-                <View className="flex-1 h-[1px] bg-muted/30" />
+                <View className="flex-1 h-[1px] bg-muted/20" />
               </View>
 
-              {/* Email Input */}
-              <Input
-                label="Email Address"
-                value={formData.email}
-                onChangeText={(val) => handleInputChange('email', val)}
-                onBlur={() =>
-                  setErrors((prev) => ({
-                    ...prev,
-                    email: validateEmail(formData.email),
-                  }))
-                }
-                placeholder="you@example.com"
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoCorrect={false}
-                error={errors.email}
-                required
-                leftElement={<Icon name="mail-outline" size={18} color="#aeabac" />}
-              />
-
-              {/* Password Input with Forgot Password Link */}
-              <View className="space-y-1">
-                <View className="flex-row items-center justify-between">
-                  <Text className="text-xs font-bold uppercase tracking-wider text-brand">
-                    Password <Text className="text-rose-500">*</Text>
-                  </Text>
-                  <TouchableOpacity
-                    onPress={handleForgotPassword}
-                    activeOpacity={0.7}
-                  >
-                    <Text className="text-xs font-semibold text-gray">
-                      Forgot password?
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-
+              {/* Form Content */}
+              <View>
+                {/* Email Address */}
                 <Input
-                  value={formData.password}
-                  onChangeText={(val) => handleInputChange('password', val)}
+                  label="Email Address"
+                  value={formData.email}
+                  onChangeText={(val) => handleInputChange('email', val)}
                   onBlur={() =>
                     setErrors((prev) => ({
                       ...prev,
-                      password: validatePassword(formData.password),
+                      email: validateEmail(formData.email),
                     }))
                   }
-                  placeholder="••••••••"
-                  secureTextEntry={!showPassword}
+                  placeholder="you@example.com"
+                  keyboardType="email-address"
                   autoCapitalize="none"
-                  error={errors.password}
-                  leftElement={<Icon name="lock-closed-outline" size={18} color="#aeabac" />}
-                  rightElement={
+                  autoCorrect={false}
+                  error={errors.email}
+                  required
+                  containerStyle={{ marginBottom: 18 }}
+                />
+
+                {/* Password Input with Forgot Password link in header row */}
+                <View className="w-full flex-col" style={{ marginBottom: 22 }}>
+                  <View className="flex-row items-center justify-between mb-2">
+                    <Text className="text-xs font-bold uppercase tracking-wider text-brand">
+                      Password <Text className="text-rose-500">*</Text>
+                    </Text>
                     <TouchableOpacity
-                      onPress={() => setShowPassword(!showPassword)}
-                      className="p-1"
+                      onPress={handleForgotPassword}
                       activeOpacity={0.7}
                     >
-                      <Icon
-                        name={showPassword ? 'eye-off-outline' : 'eye-outline'}
-                        size={18}
-                        color="#5d5a5b"
-                      />
+                      <Text className="text-xs font-semibold text-gray">
+                        Forgot password?
+                      </Text>
                     </TouchableOpacity>
-                  }
-                />
+                  </View>
+
+                  <Input
+                    value={formData.password}
+                    onChangeText={(val) => handleInputChange('password', val)}
+                    onBlur={() =>
+                      setErrors((prev) => ({
+                        ...prev,
+                        password: validatePassword(formData.password),
+                      }))
+                    }
+                    placeholder="••••••••"
+                    secureTextEntry={!showPassword}
+                    autoCapitalize="none"
+                    error={errors.password}
+                    containerStyle={{ marginBottom: 0 }}
+                    rightElement={
+                      <TouchableOpacity
+                        onPress={() => setShowPassword(!showPassword)}
+                        className="p-1"
+                        activeOpacity={0.7}
+                      >
+                        <Icon
+                          name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+                          size={18}
+                          color="#5d5a5b"
+                        />
+                      </TouchableOpacity>
+                    }
+                  />
+                </View>
+
+                {/* Submit Button */}
+                <Button
+                  variant="primary"
+                  fullWidth
+                  size="lg"
+                  isLoading={isLoading}
+                  onPress={handleSubmit}
+                  className="py-3.5"
+                  style={{ marginTop: 4 }}
+                >
+                  Log In
+                </Button>
               </View>
 
-              {/* Submit Button */}
-              <Button
-                variant="primary"
-                fullWidth
-                size="lg"
-                isLoading={isLoading}
-                onPress={handleSubmit}
-                className="mt-2"
+              {/* Footer switch link */}
+              <View
+                className="border-t border-muted/20 flex-row items-center justify-center gap-1.5"
+                style={{ marginTop: 24, paddingTop: 20 }}
               >
-                Log In
-              </Button>
-            </View>
-
-            {/* Bottom Link to Signup */}
-            <View className="flex-row items-center justify-center gap-1.5 pt-2">
-              <Text className="text-xs text-gray font-medium">
-                Don't have an account?
-              </Text>
-              <Link href="/(public)/signup" asChild>
-                <TouchableOpacity activeOpacity={0.7}>
-                  <Text className="text-xs font-bold text-brand underline">
-                    Sign up
-                  </Text>
-                </TouchableOpacity>
-              </Link>
+                <Text className="text-sm text-gray font-normal">
+                  Don't have an account?
+                </Text>
+                <Link href="/(public)/signup" asChild>
+                  <TouchableOpacity activeOpacity={0.7}>
+                    <Text className="text-sm font-bold text-brand underline">
+                      Sign up
+                    </Text>
+                  </TouchableOpacity>
+                </Link>
+              </View>
             </View>
           </View>
         </ScrollView>

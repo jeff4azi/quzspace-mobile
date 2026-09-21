@@ -13,7 +13,7 @@ import { useRouter, Link } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
-import { Checkbox } from '@/components/ui/Checkbox';
+import { GoogleIcon } from '@/components/ui/GoogleIcon';
 import { Icon } from '@/components/ui/Icon';
 
 export default function SignupScreen() {
@@ -135,167 +135,185 @@ export default function SignupScreen() {
         className="flex-1"
       >
         <ScrollView
-          contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
-          className="px-6 py-6"
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: 'center',
+            paddingVertical: 24,
+            paddingHorizontal: 16,
+          }}
           keyboardShouldPersistTaps="handled"
         >
-          <View className="w-full max-w-sm mx-auto space-y-6">
-            {/* Header / Logo Section */}
-            <View className="items-center mb-2">
-              <View className="flex-row items-center gap-2 mb-3">
+          <View className="w-full max-w-md mx-auto">
+            {/* Main Auth Card matching Web version */}
+            <View className="bg-white rounded-2xl shadow-sm border border-muted/30 p-6 sm:p-8">
+              {/* Header Section: Logo + Title + Subtitle */}
+              <View className="items-center mb-6">
                 <Image
                   source={require('@/assets/images/Quzspace_logo.png')}
-                  className="w-10 h-10"
+                  className="w-12 h-12 mb-3"
                   resizeMode="contain"
                 />
-                <Text className="text-2xl font-extrabold text-brand tracking-tight">
-                  Quz<Text className="text-gray font-semibold">Space</Text>
+                <Text className="text-2xl sm:text-3xl font-extrabold text-brand tracking-tight text-center mb-1.5">
+                  Create your account
+                </Text>
+                <Text className="text-sm text-gray leading-relaxed text-center px-2">
+                  Turn lecture notes into personalized AI study suites today.
                 </Text>
               </View>
 
-              <Text className="text-2xl font-extrabold text-brand tracking-tight text-center">
-                Create your account
-              </Text>
-              <Text className="text-xs font-medium text-gray text-center mt-1 max-w-xs leading-relaxed">
-                Turn lecture notes into personalized AI study suites today.
-              </Text>
-            </View>
-
-            {/* Auth Form Card */}
-            <View className="bg-white p-6 rounded-2xl border border-muted/30 shadow-sm space-y-4">
               {/* Decorative Google Button */}
               <Button
                 variant="google"
                 fullWidth
                 onPress={handleGoogleSignIn}
-                leftIcon={<Icon name="logo-google" size={18} color="#ea4335" />}
+                leftIcon={<GoogleIcon size={18} />}
+                className="py-3.5"
               >
                 Continue with Google
               </Button>
 
               {/* Divider */}
-              <View className="flex-row items-center justify-center my-3">
-                <View className="flex-1 h-[1px] bg-muted/30" />
-                <Text className="px-3 text-[11px] uppercase tracking-wider text-muted font-bold">
+              <View
+                className="relative flex-row items-center justify-center"
+                style={{ marginVertical: 20 }}
+              >
+                <View className="flex-1 h-[1px] bg-muted/20" />
+                <Text className="px-3 text-xs uppercase tracking-wider text-muted font-bold bg-white">
                   or
                 </Text>
-                <View className="flex-1 h-[1px] bg-muted/30" />
+                <View className="flex-1 h-[1px] bg-muted/20" />
               </View>
 
-              {/* Full Name Input */}
-              <Input
-                label="Full Name"
-                value={formData.fullName}
-                onChangeText={(val) => handleInputChange('fullName', val)}
-                onBlur={() =>
-                  setErrors((prev) => ({
-                    ...prev,
-                    fullName: validateFullName(formData.fullName),
-                  }))
-                }
-                placeholder="Jane Doe"
-                autoCapitalize="words"
-                error={errors.fullName}
-                required
-                leftElement={<Icon name="person-outline" size={18} color="#aeabac" />}
-              />
+              {/* Form Content */}
+              <View>
+                {/* Full Name Input */}
+                <Input
+                  label="Full Name"
+                  value={formData.fullName}
+                  onChangeText={(val) => handleInputChange('fullName', val)}
+                  onBlur={() =>
+                    setErrors((prev) => ({
+                      ...prev,
+                      fullName: validateFullName(formData.fullName),
+                    }))
+                  }
+                  placeholder="Jane Doe"
+                  autoCapitalize="words"
+                  error={errors.fullName}
+                  required
+                  containerStyle={{ marginBottom: 18 }}
+                />
 
-              {/* Email Address */}
-              <Input
-                label="Email Address"
-                value={formData.email}
-                onChangeText={(val) => handleInputChange('email', val)}
-                onBlur={() =>
-                  setErrors((prev) => ({
-                    ...prev,
-                    email: validateEmail(formData.email),
-                  }))
-                }
-                placeholder="you@example.com"
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoCorrect={false}
-                error={errors.email}
-                required
-                leftElement={<Icon name="mail-outline" size={18} color="#aeabac" />}
-              />
+                {/* Email Address */}
+                <Input
+                  label="Email Address"
+                  value={formData.email}
+                  onChangeText={(val) => handleInputChange('email', val)}
+                  onBlur={() =>
+                    setErrors((prev) => ({
+                      ...prev,
+                      email: validateEmail(formData.email),
+                    }))
+                  }
+                  placeholder="you@example.com"
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  error={errors.email}
+                  required
+                  containerStyle={{ marginBottom: 18 }}
+                />
 
-              {/* Password Input */}
-              <Input
-                label="Password"
-                value={formData.password}
-                onChangeText={(val) => handleInputChange('password', val)}
-                onBlur={() =>
-                  setErrors((prev) => ({
-                    ...prev,
-                    password: validatePassword(formData.password),
-                  }))
-                }
-                placeholder="At least 8 characters"
-                helperText="Must be at least 8 characters long"
-                secureTextEntry={!showPassword}
-                autoCapitalize="none"
-                error={errors.password}
-                required
-                leftElement={<Icon name="lock-closed-outline" size={18} color="#aeabac" />}
-                rightElement={
+                {/* Password Input */}
+                <Input
+                  label="Password"
+                  value={formData.password}
+                  onChangeText={(val) => handleInputChange('password', val)}
+                  onBlur={() =>
+                    setErrors((prev) => ({
+                      ...prev,
+                      password: validatePassword(formData.password),
+                    }))
+                  }
+                  placeholder="At least 8 characters"
+                  helperText={errors.password ? undefined : 'Must be at least 8 characters long'}
+                  secureTextEntry={!showPassword}
+                  autoCapitalize="none"
+                  error={errors.password}
+                  required
+                  containerStyle={{ marginBottom: 18 }}
+                  rightElement={
+                    <TouchableOpacity
+                      onPress={() => setShowPassword(!showPassword)}
+                      className="p-1"
+                      activeOpacity={0.7}
+                    >
+                      <Icon
+                        name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+                        size={18}
+                        color="#5d5a5b"
+                      />
+                    </TouchableOpacity>
+                  }
+                />
+
+                {/* Confirm Password Input */}
+                <Input
+                  label="Confirm Password"
+                  value={formData.confirmPassword}
+                  onChangeText={(val) => handleInputChange('confirmPassword', val)}
+                  onBlur={() =>
+                    setErrors((prev) => ({
+                      ...prev,
+                      confirmPassword: validateConfirmPassword(
+                        formData.confirmPassword,
+                        formData.password
+                      ),
+                    }))
+                  }
+                  placeholder="Re-enter password"
+                  secureTextEntry={!showConfirmPassword}
+                  autoCapitalize="none"
+                  error={errors.confirmPassword}
+                  required
+                  containerStyle={{ marginBottom: 18 }}
+                  rightElement={
+                    <TouchableOpacity
+                      onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="p-1"
+                      activeOpacity={0.7}
+                    >
+                      <Icon
+                        name={showConfirmPassword ? 'eye-off-outline' : 'eye-outline'}
+                        size={18}
+                        color="#5d5a5b"
+                      />
+                    </TouchableOpacity>
+                  }
+                />
+
+                {/* Terms Agreement Checkbox */}
+                <View style={{ marginBottom: 22, paddingTop: 4 }}>
                   <TouchableOpacity
-                    onPress={() => setShowPassword(!showPassword)}
-                    className="p-1"
+                    onPress={() =>
+                      handleInputChange('termsAgreed', !formData.termsAgreed)
+                    }
+                    className="flex-row items-start gap-2.5"
                     activeOpacity={0.7}
                   >
-                    <Icon
-                      name={showPassword ? 'eye-off-outline' : 'eye-outline'}
-                      size={18}
-                      color="#5d5a5b"
-                    />
-                  </TouchableOpacity>
-                }
-              />
+                    <View
+                      className={`w-4 h-4 rounded mt-0.5 items-center justify-center border transition-all ${
+                        formData.termsAgreed
+                          ? 'bg-brand border-brand'
+                          : 'bg-white border-muted/60'
+                      }`}
+                    >
+                      {formData.termsAgreed && (
+                        <Icon name="checkmark" size={11} color="#f1f1f1" />
+                      )}
+                    </View>
 
-              {/* Confirm Password Input */}
-              <Input
-                label="Confirm Password"
-                value={formData.confirmPassword}
-                onChangeText={(val) => handleInputChange('confirmPassword', val)}
-                onBlur={() =>
-                  setErrors((prev) => ({
-                    ...prev,
-                    confirmPassword: validateConfirmPassword(
-                      formData.confirmPassword,
-                      formData.password
-                    ),
-                  }))
-                }
-                placeholder="Re-enter password"
-                secureTextEntry={!showConfirmPassword}
-                autoCapitalize="none"
-                error={errors.confirmPassword}
-                required
-                leftElement={<Icon name="shield-checkmark-outline" size={18} color="#aeabac" />}
-                rightElement={
-                  <TouchableOpacity
-                    onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="p-1"
-                    activeOpacity={0.7}
-                  >
-                    <Icon
-                      name={showConfirmPassword ? 'eye-off-outline' : 'eye-outline'}
-                      size={18}
-                      color="#5d5a5b"
-                    />
-                  </TouchableOpacity>
-                }
-              />
-
-              {/* Terms Agreement Checkbox */}
-              <View className="pt-1">
-                <Checkbox
-                  checked={formData.termsAgreed}
-                  onChange={(val) => handleInputChange('termsAgreed', val)}
-                  error={errors.termsAgreed}
-                  label={
-                    <Text className="text-xs text-gray leading-normal">
+                    <Text className="text-xs text-gray leading-normal flex-1">
                       I agree to the{' '}
                       <Text className="text-brand font-bold">
                         Terms of Service
@@ -306,36 +324,46 @@ export default function SignupScreen() {
                       </Text>
                       .
                     </Text>
-                  }
-                />
+                  </TouchableOpacity>
+
+                  {errors.termsAgreed ? (
+                    <Text className="text-xs text-rose-600 font-medium mt-1.5 ml-6">
+                      {errors.termsAgreed}
+                    </Text>
+                  ) : null}
+                </View>
+
+                {/* Submit Button */}
+                <Button
+                  variant="primary"
+                  fullWidth
+                  size="lg"
+                  isLoading={isLoading}
+                  disabled={!isFormValid}
+                  onPress={handleSubmit}
+                  className="py-3.5"
+                  style={{ marginTop: 4 }}
+                >
+                  Create Account
+                </Button>
               </View>
 
-              {/* Submit Button */}
-              <Button
-                variant="primary"
-                fullWidth
-                size="lg"
-                isLoading={isLoading}
-                disabled={!isFormValid}
-                onPress={handleSubmit}
-                className="mt-2"
+              {/* Footer switch link */}
+              <View
+                className="border-t border-muted/20 flex-row items-center justify-center gap-1.5"
+                style={{ marginTop: 24, paddingTop: 20 }}
               >
-                Create Account
-              </Button>
-            </View>
-
-            {/* Bottom Link to Login */}
-            <View className="flex-row items-center justify-center gap-1.5 pt-2">
-              <Text className="text-xs text-gray font-medium">
-                Already have an account?
-              </Text>
-              <Link href="/(public)/login" asChild>
-                <TouchableOpacity activeOpacity={0.7}>
-                  <Text className="text-xs font-bold text-brand underline">
-                    Log in
-                  </Text>
-                </TouchableOpacity>
-              </Link>
+                <Text className="text-sm text-gray font-normal">
+                  Already have an account?
+                </Text>
+                <Link href="/(public)/login" asChild>
+                  <TouchableOpacity activeOpacity={0.7}>
+                    <Text className="text-sm font-bold text-brand underline">
+                      Log in
+                    </Text>
+                  </TouchableOpacity>
+                </Link>
+              </View>
             </View>
           </View>
         </ScrollView>

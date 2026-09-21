@@ -45,7 +45,10 @@ export default function SpaceLayout() {
         title={currentSpace.title}
         subject={currentSpace.subject}
         fileCount={currentSpace.fileCount}
+        lastActive={currentSpace.lastActive}
+        createdAt={currentSpace.createdAt}
         masteryPercent={currentSpace.progressPercent}
+        activeMembers={currentSpace.activeMembers}
       />
 
       {/* Horizontal Scrollable SpaceTabs Bar */}

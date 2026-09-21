@@ -11,6 +11,8 @@ export interface StudySpace {
   subject: string;
   fileCount: number;
   lastAccessed: string;
+  lastActive: string;
+  createdAt: string;
   progressPercent: number;
   accentStyle: string;
   accentColor?: string;
@@ -24,6 +26,8 @@ export const mockStudySpaces: StudySpace[] = [
     subject: "Computer Science",
     fileCount: 8,
     lastAccessed: "2 hours ago",
+    lastActive: "2 hours ago",
+    createdAt: "Aug 14, 2026",
     progressPercent: 85,
     accentStyle: "from-brand to-gray-700",
     accentColor: "#242021",
@@ -40,6 +44,8 @@ export const mockStudySpaces: StudySpace[] = [
     subject: "Chemistry",
     fileCount: 14,
     lastAccessed: "Yesterday",
+    lastActive: "Yesterday",
+    createdAt: "Aug 10, 2026",
     progressPercent: 60,
     accentStyle: "from-emerald-700 to-brand",
     accentColor: "#047857",
@@ -55,6 +61,8 @@ export const mockStudySpaces: StudySpace[] = [
     subject: "Computer Science",
     fileCount: 12,
     lastAccessed: "3 days ago",
+    lastActive: "3 days ago",
+    createdAt: "Aug 02, 2026",
     progressPercent: 92,
     accentStyle: "from-brand to-slate-800",
     accentColor: "#334155",
@@ -69,6 +77,8 @@ export const mockStudySpaces: StudySpace[] = [
     subject: "Biology",
     fileCount: 6,
     lastAccessed: "5 days ago",
+    lastActive: "5 days ago",
+    createdAt: "Jul 28, 2026",
     progressPercent: 40,
     accentStyle: "from-amber-700 to-brand",
     accentColor: "#b45309",
@@ -82,6 +92,8 @@ export const mockStudySpaces: StudySpace[] = [
     subject: "Mathematics",
     fileCount: 9,
     lastAccessed: "1 week ago",
+    lastActive: "1 week ago",
+    createdAt: "Jul 15, 2026",
     progressPercent: 25,
     accentStyle: "from-indigo-800 to-brand",
     accentColor: "#3730a3",
@@ -97,6 +109,8 @@ export const mockStudySpaces: StudySpace[] = [
     subject: "History",
     fileCount: 5,
     lastAccessed: "2 weeks ago",
+    lastActive: "2 weeks ago",
+    createdAt: "Jul 01, 2026",
     progressPercent: 100,
     accentStyle: "from-rose-800 to-brand",
     accentColor: "#9f1239",

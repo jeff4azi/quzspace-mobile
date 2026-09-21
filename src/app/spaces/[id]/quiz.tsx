@@ -15,8 +15,11 @@ export default function SpaceQuizTab() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
   const [quizzes, setQuizzes] = useState<QuizItem[]>(mockQuizzes);
-
   const spaceId = id || 'cs-301';
+
+  const handleDeleteQuiz = (quizId: string) => {
+    setQuizzes((prev) => prev.filter((q) => q.id !== quizId));
+  };
 
   return (
     <ScrollView
@@ -55,7 +58,12 @@ export default function SpaceQuizTab() {
       {quizzes && quizzes.length > 0 ? (
         <View className="pt-1">
           {quizzes.map((quiz) => (
-            <QuizCard key={quiz.id} quiz={quiz} spaceId={spaceId} />
+            <QuizCard
+              key={quiz.id}
+              quiz={quiz}
+              spaceId={spaceId}
+              onDelete={handleDeleteQuiz}
+            />
           ))}
         </View>
       ) : (

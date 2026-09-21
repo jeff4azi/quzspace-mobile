@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   TouchableWithoutFeedback,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Icon } from '@/components/ui/Icon';
 import { QuizItem } from '@/data/mockQuizzes';
 
@@ -31,6 +32,7 @@ export function GenerateQuizModal({
   onQuizGenerated,
   currentQuizCount = 0,
 }: GenerateQuizModalProps) {
+  const insets = useSafeAreaInsets();
   const [questionCount, setQuestionCount] = useState(20);
   const [difficulty, setDifficulty] = useState<QuizItem['difficulty']>('Easy');
   const [isGenerating, setIsGenerating] = useState(false);
@@ -68,80 +70,97 @@ export function GenerateQuizModal({
       transparent
       visible={visible}
       animationType="slide"
+      statusBarTranslucent
       onRequestClose={handleClose}
     >
-      <TouchableWithoutFeedback onPress={handleClose}>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          justifyContent: 'flex-end',
+        }}
+      >
+        {/* Full-screen backdrop touch to dismiss */}
+        <TouchableWithoutFeedback onPress={handleClose}>
+          <View
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+            }}
+          />
+        </TouchableWithoutFeedback>
+
+        {/* Bottom Sheet Card */}
         <View
           style={{
-            flex: 1,
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            justifyContent: 'flex-end',
+            backgroundColor: '#ffffff',
+            borderTopLeftRadius: 28,
+            borderTopRightRadius: 28,
+            paddingHorizontal: 24,
+            paddingTop: 20,
+            paddingBottom: Math.max(insets.bottom, 16) + 16,
+            borderWidth: 1,
+            borderBottomWidth: 0,
+            borderColor: 'rgba(174, 171, 172, 0.25)',
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: -4 },
+            shadowOpacity: 0.15,
+            shadowRadius: 16,
+            elevation: 12,
+            width: '100%',
           }}
         >
-          <TouchableWithoutFeedback>
-            <View
-              style={{
-                backgroundColor: '#ffffff',
-                borderTopLeftRadius: 28,
-                borderTopRightRadius: 28,
-                paddingHorizontal: 24,
-                paddingTop: 20,
-                paddingBottom: 36,
-                borderWidth: 1,
-                borderColor: 'rgba(174, 171, 172, 0.25)',
-                shadowColor: '#000',
-                shadowOffset: { width: 0, height: -4 },
-                shadowOpacity: 0.15,
-                shadowRadius: 16,
-                elevation: 12,
-              }}
-            >
-              {/* Top Drag Indicator */}
+          {/* Top Drag Indicator */}
+          <View
+            style={{
+              width: 36,
+              height: 4,
+              borderRadius: 2,
+              backgroundColor: '#e5e7eb',
+              alignSelf: 'center',
+              marginBottom: 16,
+            }}
+          />
+
+          {/* Header */}
+          <View className="flex-row items-center justify-between pb-3.5 border-b border-muted/20 mb-5">
+            <View className="flex-row items-center gap-2.5" style={{ flex: 1, marginRight: 8 }}>
               <View
                 style={{
                   width: 36,
-                  height: 4,
-                  borderRadius: 2,
-                  backgroundColor: '#e5e7eb',
-                  alignSelf: 'center',
-                  marginBottom: 16,
+                  height: 36,
+                  borderRadius: 12,
+                  backgroundColor: 'rgba(36, 32, 33, 0.08)',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
                 }}
-              />
-
-              {/* Header */}
-              <View className="flex-row items-center justify-between pb-3.5 border-b border-muted/20 mb-5">
-                <View className="flex-row items-center gap-2.5">
-                  <View
-                    style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: 12,
-                      backgroundColor: 'rgba(36, 32, 33, 0.08)',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <Icon name="help-circle-outline" size={20} color="#242021" />
-                  </View>
-
-                  <View>
-                    <Text className="text-base font-extrabold text-brand tracking-tight">
-                      Generate New Quiz
-                    </Text>
-                    <Text className="text-[11px] font-semibold text-gray-400">
-                      {currentQuizCount} {currentQuizCount === 1 ? 'quiz' : 'quizzes'} in this space
-                    </Text>
-                  </View>
-                </View>
-
-                <TouchableOpacity
-                  onPress={handleClose}
-                  activeOpacity={0.7}
-                  className="w-8 h-8 rounded-full bg-light items-center justify-center"
-                >
-                  <Icon name="close" size={16} color="#5d5a5b" />
-                </TouchableOpacity>
+              >
+                <Icon name="help-circle-outline" size={20} color="#242021" />
               </View>
+
+              <View style={{ flexShrink: 1 }}>
+                <Text className="text-base font-extrabold text-brand tracking-tight" numberOfLines={1}>
+                  Generate New Quiz
+                </Text>
+                <Text className="text-[11px] font-semibold text-gray-400" numberOfLines={1}>
+                  {currentQuizCount} {currentQuizCount === 1 ? 'quiz' : 'quizzes'} in this space
+                </Text>
+              </View>
+            </View>
+
+            <TouchableOpacity
+              onPress={handleClose}
+              activeOpacity={0.7}
+              className="w-8 h-8 rounded-full bg-light items-center justify-center"
+              style={{ flexShrink: 0 }}
+            >
+              <Icon name="close" size={16} color="#5d5a5b" />
+            </TouchableOpacity>
+          </View>
 
               {/* Number of Questions Section */}
               <View className="mb-5">
@@ -262,7 +281,7 @@ export function GenerateQuizModal({
                     alignItems: 'center',
                     justifyContent: 'center',
                     flexDirection: 'row',
-                    gap: 6,
+                    gap: 8,
                     shadowColor: '#000',
                     shadowOffset: { width: 0, height: 2 },
                     shadowOpacity: 0.15,
@@ -274,8 +293,8 @@ export function GenerateQuizModal({
                     <ActivityIndicator size="small" color="#f1f1f1" />
                   ) : (
                     <>
-                      <Icon name="sparkles" size={15} color="#fbbf24" />
-                      <Text className="text-xs font-bold text-light">
+                      <Icon name="sparkles" size={16} color="#fbbf24" />
+                      <Text className="text-xs font-bold text-light" numberOfLines={1}>
                         Generate Quiz
                       </Text>
                     </>
@@ -288,16 +307,14 @@ export function GenerateQuizModal({
                   activeOpacity={0.7}
                   className="py-3 rounded-xl border border-muted/30 bg-gray-100/80 items-center justify-center"
                 >
-                  <Text className="text-xs font-bold text-gray-700">
+                  <Text className="text-xs font-bold text-gray-700" numberOfLines={1}>
                     Cancel
                   </Text>
                 </TouchableOpacity>
               </View>
             </View>
-          </TouchableWithoutFeedback>
-        </View>
-      </TouchableWithoutFeedback>
-    </Modal>
+          </View>
+        </Modal>
   );
 }
 

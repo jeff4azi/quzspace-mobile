@@ -28,7 +28,7 @@ export function SegmentedControl<T extends string = string>({
             key={option.id}
             onPress={() => onChange(option.id)}
             activeOpacity={0.8}
-            className={`flex-1 flex-row items-center justify-center gap-2 py-2.5 px-3 rounded-lg transition-all ${
+            className={`flex-1 flex-row items-center justify-center gap-2 py-2.5 px-3 rounded-lg ${
               isActive ? 'bg-white shadow-xs' : ''
             }`}
           >

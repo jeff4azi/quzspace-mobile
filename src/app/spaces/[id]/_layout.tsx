@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { Slot, useLocalSearchParams, useRouter, usePathname } from 'expo-router';
 import { SpaceHeader } from '@/components/study-space/SpaceHeader';
 import { Icon, IconName } from '@/components/ui/Icon';
+import { mockStudySpaces } from '@/data/mockStudySpaces';
 
 export interface SpaceTabItem {
   id: string;
@@ -26,16 +27,26 @@ export default function SpaceLayout() {
   const router = useRouter();
   const pathname = usePathname();
 
-  // Extract current active tab segment from pathname (e.g., /spaces/1/summary -> summary)
+  const activeSpaceId = id || 'cs-301';
+  const currentSpace =
+    mockStudySpaces.find((s) => s.id === activeSpaceId) || mockStudySpaces[0];
+
+  // Extract current active tab segment from pathname (e.g., /spaces/cs-301/summary -> summary)
   const currentTab = pathname.split('/').pop() || 'summary';
 
   const handleTabPress = (tabId: string) => {
-    router.replace(`/spaces/${id}/${tabId}` as any);
+    router.replace(`/spaces/${activeSpaceId}/${tabId}` as any);
   };
 
   return (
     <View className="flex-1 bg-light">
-      <SpaceHeader spaceId={id} />
+      <SpaceHeader
+        spaceId={currentSpace.id}
+        title={currentSpace.title}
+        subject={currentSpace.subject}
+        fileCount={currentSpace.fileCount}
+        masteryPercent={currentSpace.progressPercent}
+      />
 
       {/* Horizontal Scrollable SpaceTabs Bar */}
       <View className="bg-white border-b border-muted/20 py-2">
@@ -50,10 +61,15 @@ export default function SpaceLayout() {
               <TouchableOpacity
                 key={tab.id}
                 onPress={() => handleTabPress(tab.id)}
-                className={`flex-row items-center gap-1.5 px-3.5 py-2 rounded-xl transition-all ${
-                  isActive ? 'bg-brand shadow-sm' : 'bg-light/80'
-                }`}
                 activeOpacity={0.7}
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  paddingHorizontal: 14,
+                  paddingVertical: 8,
+                  borderRadius: 12,
+                  backgroundColor: isActive ? '#242021' : '#f1f1f1',
+                }}
               >
                 <Icon
                   name={tab.icon}
@@ -61,9 +77,12 @@ export default function SpaceLayout() {
                   color={isActive ? '#f1f1f1' : '#5d5a5b'}
                 />
                 <Text
-                  className={`text-xs font-bold ${
-                    isActive ? 'text-light' : 'text-gray'
-                  }`}
+                  style={{
+                    fontSize: 12,
+                    fontWeight: '700',
+                    color: isActive ? '#f1f1f1' : '#5d5a5b',
+                    marginLeft: 6,
+                  }}
                 >
                   {tab.label}
                 </Text>
@@ -80,3 +99,4 @@ export default function SpaceLayout() {
     </View>
   );
 }
+

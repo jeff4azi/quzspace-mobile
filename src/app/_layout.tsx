@@ -13,13 +13,7 @@ export default function RootLayout() {
           contentStyle: { backgroundColor: '#f1f1f1' },
           animation: 'fade_from_bottom',
         }}
-      >
-        <Stack.Screen name="(public)" options={{ headerShown: false }} />
-        <Stack.Screen name="(app)" options={{ headerShown: false }} />
-        <Stack.Screen name="spaces/[id]" options={{ headerShown: false }} />
-        <Stack.Screen name="quiz/[quizId]" options={{ headerShown: false }} />
-        <Stack.Screen name="s/[shareCode]" options={{ headerShown: false }} />
-      </Stack>
+      />
     </>
   );
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Share } from 'react-native';
 import { useRouter } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Icon } from '@/components/ui/Icon';
 
 interface SpaceHeaderProps {
@@ -23,6 +23,7 @@ export function SpaceHeader({
   masteryPercent = 85,
 }: SpaceHeaderProps) {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
 
   const handleShare = async () => {
     try {
@@ -35,12 +36,14 @@ export function SpaceHeader({
   };
 
   return (
-    <SafeAreaView edges={['top']} className="bg-white border-b border-muted/20">
+    <View style={{ paddingTop: insets.top, backgroundColor: '#ffffff', borderBottomWidth: 1, borderBottomColor: 'rgba(174, 171, 172, 0.2)' }}>
       <View className="px-5 pt-3 pb-3">
         {/* Top bar: Back Button + Share Button */}
         <View className="flex-row items-center justify-between mb-3">
           <TouchableOpacity
-            onPress={() => router.push('/(app)/dashboard')}
+            onPress={() => {
+              router.navigate('/(app)/dashboard' as any);
+            }}
             className="flex-row items-center gap-1.5 py-1 px-1.5 -ml-1.5 active:opacity-70"
             activeOpacity={0.7}
           >
@@ -87,7 +90,7 @@ export function SpaceHeader({
           </View>
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 

@@ -28,7 +28,7 @@ export function Checkbox({
         activeOpacity={0.7}
       >
         <View
-          className={`w-5 h-5 rounded-md items-center justify-center mt-0.5 border transition-all ${
+          className={`w-5 h-5 rounded-md items-center justify-center mt-0.5 border ${
             checked
               ? 'bg-brand border-brand shadow-xs'
               : 'bg-white border-muted/50'

@@ -53,7 +53,7 @@ export default function DashboardScreen() {
         </View>
 
         <TouchableOpacity
-          onPress={() => router.push('/(app)/create')}
+          onPress={() => router.navigate('/(app)/create' as any)}
           activeOpacity={0.8}
           style={{
             flexDirection: 'row',
@@ -100,7 +100,7 @@ export default function DashboardScreen() {
           ))}
         </View>
       ) : (
-        <EmptyState onCreateClick={() => router.push('/(app)/create')} />
+        <EmptyState onCreateClick={() => router.navigate('/(app)/create' as any)} />
       )}
     </ScrollView>
   );

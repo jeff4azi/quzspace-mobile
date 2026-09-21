@@ -145,14 +145,18 @@ export default function CreateStudySpaceScreen() {
       {/* Top Back Button & Heading */}
       <View className="mb-6">
         <TouchableOpacity
-          onPress={() => router.back()}
+          onPress={() => {
+            if (router.canGoBack()) {
+              router.back();
+            } else {
+              router.navigate('/(app)/dashboard' as any);
+            }
+          }}
           className="flex-row items-center gap-1.5 mb-3"
           activeOpacity={0.7}
         >
           <Icon name="arrow-back" size={16} color="#5d5a5b" />
-          <Text className="text-xs font-bold text-gray">
-            Back to Dashboard
-          </Text>
+          <Text className="text-xs font-bold text-gray">Back to Dashboard</Text>
         </TouchableOpacity>
 
         <Text className="text-2xl font-extrabold text-brand tracking-tight">

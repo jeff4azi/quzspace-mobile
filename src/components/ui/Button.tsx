@@ -97,7 +97,7 @@ export function Button({
     <TouchableOpacity
       disabled={isDisabled}
       activeOpacity={0.8}
-      className={`rounded-xl flex-row items-center justify-center transition-all ${
+      className={`rounded-xl flex-row items-center justify-center ${
         fullWidth ? 'w-full' : ''
       } ${getVariantStyles()} ${getSizeStyles()} ${
         isDisabled ? 'opacity-50' : 'active:opacity-90'

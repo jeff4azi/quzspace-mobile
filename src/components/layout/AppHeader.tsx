@@ -1,13 +1,14 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export function AppHeader() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
 
   return (
-    <SafeAreaView edges={['top']} className="bg-white border-b border-muted/20">
+    <View style={{ paddingTop: insets.top, backgroundColor: '#ffffff', borderBottomWidth: 1, borderBottomColor: 'rgba(174, 171, 172, 0.2)' }}>
       <View className="flex-row items-center justify-between px-5 py-3">
         {/* Brand Logo & Wordmark */}
         <TouchableOpacity
@@ -34,7 +35,7 @@ export function AppHeader() {
           <Text className="text-xs font-bold text-light">QS</Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 

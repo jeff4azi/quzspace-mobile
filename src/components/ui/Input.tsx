@@ -49,7 +49,7 @@ export function Input({
       )}
 
       <View
-        className={`relative flex-row items-center w-full rounded-xl border px-3.5 transition-all ${
+        className={`relative flex-row items-center w-full rounded-xl border px-3.5 ${
           editable ? 'bg-white' : 'bg-light/70'
         } ${
           error

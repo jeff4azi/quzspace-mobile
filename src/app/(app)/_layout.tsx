@@ -68,12 +68,13 @@ export default function AppLayout() {
             tabBarIcon: () => null,
             tabBarButton: (props) => (
               <TouchableOpacity
-                onPress={() => router.push('/(app)/create')}
+                onPress={props.onPress}
+                accessibilityState={props.accessibilityState}
                 className="flex-1 items-center justify-center -top-5"
                 activeOpacity={0.85}
               >
                 <View
-                  className="rounded-full bg-brand items-center justify-center shadow-lg active:scale-95 transition-transform"
+                  className="rounded-full bg-brand items-center justify-center shadow-lg"
                   style={{
                     width: 52,
                     height: 52,

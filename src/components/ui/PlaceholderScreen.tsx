@@ -36,14 +36,12 @@ export function PlaceholderScreen({
       </Text>
 
       <View className="px-3.5 py-1.5 rounded-full bg-muted/20 border border-muted/30">
-        <Text className="text-xs font-semibold text-gray">
-          Coming Soon
-        </Text>
+        <Text className="text-xs font-semibold text-gray">Coming Soon</Text>
       </View>
 
       {showHomeLink && (
         <TouchableOpacity
-          onPress={() => router.push('/(app)/dashboard')}
+          onPress={() => router.navigate('/(app)/dashboard' as any)}
           className="mt-6 px-5 py-2.5 rounded-xl bg-brand items-center justify-center shadow-sm active:opacity-90"
         >
           <Text className="text-sm font-bold text-light">Go to Dashboard</Text>

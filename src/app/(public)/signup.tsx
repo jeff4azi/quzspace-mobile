@@ -312,7 +312,7 @@ export default function SignupScreen() {
                   activeOpacity={0.7}
                 >
                   <View
-                    className={`w-4 h-4 rounded mt-0.5 items-center justify-center border transition-all ${
+                    className={`w-4 h-4 rounded mt-0.5 items-center justify-center border ${
                       formData.termsAgreed
                         ? 'bg-brand border-brand'
                         : 'bg-white border-muted/60'

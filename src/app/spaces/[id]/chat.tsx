@@ -1,30 +1,30 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
   ScrollView,
   TextInput,
   TouchableOpacity,
-} from 'react-native';
-import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Icon } from '@/components/ui/Icon';
-import { ChatMessage } from '@/components/study-space/ChatMessage';
-import { ChatEmptyState } from '@/components/study-space/ChatEmptyState';
-import { TypingIndicator } from '@/components/study-space/TypingIndicator';
+} from "react-native";
+import { KeyboardAvoidingView } from "react-native-keyboard-controller";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Icon } from "@/components/ui/Icon";
+import { ChatMessage } from "@/components/study-space/ChatMessage";
+import { ChatEmptyState } from "@/components/study-space/ChatEmptyState";
+import { TypingIndicator } from "@/components/study-space/TypingIndicator";
 import {
   mockChatMessages,
   ChatMessageItem,
   cannedResponses,
-} from '@/data/mockChatMessages';
+} from "@/data/mockChatMessages";
 
 export default function SpaceChatTab() {
   const insets = useSafeAreaInsets();
   const [messages, setMessages] = useState<ChatMessageItem[]>(mockChatMessages);
-  const [inputText, setInputText] = useState('');
+  const [inputText, setInputText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
-
+  
   const scrollToBottom = (animated = true) => {
     setTimeout(() => {
       scrollViewRef.current?.scrollToEnd({ animated });
@@ -41,16 +41,16 @@ export default function SpaceChatTab() {
 
     const userMsg: ChatMessageItem = {
       id: `msg-${Date.now()}`,
-      role: 'user',
+      role: "user",
       content: text,
       timestamp: new Date().toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit',
+        hour: "2-digit",
+        minute: "2-digit",
       }),
     };
 
     setMessages((prev) => [...prev, userMsg]);
-    setInputText('');
+    setInputText("");
     setIsTyping(true);
     scrollToBottom(true);
 
@@ -59,11 +59,11 @@ export default function SpaceChatTab() {
         cannedResponses[Math.floor(Math.random() * cannedResponses.length)];
       const botMsg: ChatMessageItem = {
         id: `bot-${Date.now()}`,
-        role: 'assistant',
+        role: "assistant",
         content: randomResponse,
         timestamp: new Date().toLocaleTimeString([], {
-          hour: '2-digit',
-          minute: '2-digit',
+          hour: "2-digit",
+          minute: "2-digit",
         }),
       };
 
@@ -78,12 +78,10 @@ export default function SpaceChatTab() {
   };
 
   return (
-    // react-native-keyboard-controller's KeyboardAvoidingView reads exact
-    // keyboard height (incl. suggestion bar) from the native layer, so no
-    // manual Animated.Value or hardcoded offsets are needed.
     <KeyboardAvoidingView
       behavior="padding"
-      style={{ flex: 1, backgroundColor: '#f1f1f1' }}
+      style={{ flex: 1, backgroundColor: "#f1f1f1" }}
+      contentContainerStyle={{ flex: 1 }}
     >
       {/* Header Info Bar */}
       <View className="flex-row items-center justify-between px-5 py-2.5 bg-white border-b border-muted/20">
@@ -134,25 +132,24 @@ export default function SpaceChatTab() {
           paddingHorizontal: 16,
           paddingTop: 10,
           paddingBottom: Math.max(insets.bottom, 12) + 4,
-          backgroundColor: '#ffffff',
+          backgroundColor: "#ffffff",
           borderTopWidth: 1,
-          borderTopColor: 'rgba(174, 171, 172, 0.25)',
+          borderTopColor: "rgba(174, 171, 172, 0.25)",
         }}
       >
         <View className="flex-row items-end gap-2">
-          {/* Text Input Box */}
           <View
             style={{
               flex: 1,
-              backgroundColor: '#f8f8f8',
+              backgroundColor: "#f8f8f8",
               borderRadius: 18,
               borderWidth: 1,
-              borderColor: 'rgba(174, 171, 172, 0.35)',
+              borderColor: "rgba(174, 171, 172, 0.35)",
               paddingHorizontal: 14,
               paddingVertical: 8,
               minHeight: 44,
               maxHeight: 120,
-              justifyContent: 'center',
+              justifyContent: "center",
             }}
           >
             <TextInput
@@ -163,7 +160,7 @@ export default function SpaceChatTab() {
               multiline
               style={{
                 fontSize: 13,
-                color: '#242021',
+                color: "#242021",
                 maxHeight: 100,
                 paddingTop: 0,
                 paddingBottom: 0,
@@ -171,7 +168,6 @@ export default function SpaceChatTab() {
             />
           </View>
 
-          {/* Send Button */}
           <TouchableOpacity
             onPress={() => handleSend()}
             disabled={!inputText.trim() || isTyping}
@@ -180,10 +176,11 @@ export default function SpaceChatTab() {
               width: 44,
               height: 44,
               borderRadius: 22,
-              backgroundColor: inputText.trim() && !isTyping ? '#242021' : '#aeabac',
-              alignItems: 'center',
-              justifyContent: 'center',
-              shadowColor: '#000',
+              backgroundColor:
+                inputText.trim() && !isTyping ? "#242021" : "#aeabac",
+              alignItems: "center",
+              justifyContent: "center",
+              shadowColor: "#000",
               shadowOffset: { width: 0, height: 2 },
               shadowOpacity: inputText.trim() ? 0.15 : 0,
               shadowRadius: 3,

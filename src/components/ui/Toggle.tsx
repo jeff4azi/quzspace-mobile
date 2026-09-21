@@ -19,11 +19,14 @@ export function Toggle({
   className = '',
 }: ToggleProps) {
   return (
-    <View className={`flex-row items-center justify-between gap-4 py-3 ${className}`}>
-      <View className="flex-1 pr-2">
+    <View
+      className={`flex-row items-center justify-between gap-4 ${className}`}
+      style={{ paddingVertical: 14 }}
+    >
+      <View className="flex-1 pr-3">
         <Text className="text-sm font-bold text-brand">{label}</Text>
         {description && (
-          <Text className="text-xs text-gray mt-0.5 leading-relaxed">
+          <Text className="text-xs text-gray-500 mt-1 leading-relaxed">
             {description}
           </Text>
         )}

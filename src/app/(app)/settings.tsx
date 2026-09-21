@@ -55,7 +55,7 @@ export default function SettingsScreen() {
     setProfileSuccessMsg('');
     setTimeout(() => {
       setIsSavingProfile(false);
-      setProfileSuccessMsg('Profile changes saved successfully!');
+      setProfileSuccessMsg('Profile information updated successfully!');
       setTimeout(() => setProfileSuccessMsg(''), 3000);
     }, 600);
   };
@@ -65,46 +65,57 @@ export default function SettingsScreen() {
     setPrefsSuccessMsg('');
     setTimeout(() => {
       setIsSavingPrefs(false);
-      setPrefsSuccessMsg('Preferences updated!');
+      setPrefsSuccessMsg('Preferences saved!');
       setTimeout(() => setPrefsSuccessMsg(''), 3000);
     }, 500);
   };
 
   const handleDeleteAccount = () => {
+    setShowDeleteConfirm(false);
     Alert.alert(
       'Account Deletion Simulated',
       'In a production app, all your study spaces, flashcards, and quizzes would be erased.',
-      [{ text: 'OK', onPress: () => setShowDeleteConfirm(false) }]
+      [{ text: 'OK' }]
     );
   };
 
   return (
     <ScrollView
       className="flex-1 bg-light"
-      contentContainerStyle={{ padding: 20, paddingBottom: 60, gap: 20 }}
+      contentContainerStyle={{
+        paddingHorizontal: 20,
+        paddingTop: 16,
+        paddingBottom: 90,
+      }}
       showsVerticalScrollIndicator={false}
     >
       {/* Settings Header */}
-      <View>
-        <Text className="text-2xl font-extrabold text-brand tracking-tight">
+      <View style={{ marginBottom: 24 }}>
+        <Text className="text-2xl sm:text-3xl font-extrabold text-brand tracking-tight">
           Settings
         </Text>
-        <Text className="text-xs font-medium text-gray mt-1">
+        <Text className="text-sm text-gray mt-1">
           Manage your profile details and study preferences.
         </Text>
       </View>
 
-      {/* SECTION 1: PROFILE */}
-      <View className="bg-white p-5 rounded-2xl border border-muted/30 shadow-xs space-y-5">
-        <View className="flex-row items-center gap-2 border-b border-muted/20 pb-3">
-          <Icon name="person-outline" size={18} color="#242021" />
-          <Text className="text-base font-bold text-brand">
+      {/* SECTION 1: PROFILE INFORMATION */}
+      <View
+        className="bg-white rounded-2xl border border-muted/30 shadow-xs"
+        style={{ padding: 24, marginBottom: 24 }}
+      >
+        <View
+          className="flex-row items-center gap-2 border-b border-muted/20"
+          style={{ paddingBottom: 16, marginBottom: 24 }}
+        >
+          <Icon name="person-outline" size={20} color="#242021" />
+          <Text className="text-lg font-bold text-brand">
             Profile Information
           </Text>
         </View>
 
-        {/* Avatar + Theme Color Selector */}
-        <View className="flex-row items-center gap-4">
+        {/* Avatar Row */}
+        <View className="flex-row items-center gap-5" style={{ marginBottom: 24 }}>
           <View
             className="w-16 h-16 rounded-full items-center justify-center shadow-xs"
             style={{ backgroundColor: avatarColor.hex }}
@@ -114,26 +125,26 @@ export default function SettingsScreen() {
             </Text>
           </View>
 
-          <View className="flex-1 space-y-1.5">
-            <Text className="text-xs font-bold uppercase tracking-wider text-brand">
-              Avatar Color
+          <View className="flex-1">
+            <Text className="text-xs font-bold uppercase tracking-wider text-brand mb-2">
+              Avatar Color Theme
             </Text>
-            <View className="flex-row items-center gap-2 flex-wrap">
+            <View className="flex-row items-center gap-2.5 flex-wrap">
               {AVATAR_COLORS.map((col) => (
                 <TouchableOpacity
                   key={col.name}
                   onPress={() => setAvatarColor(col)}
-                  className="w-7 h-7 rounded-full items-center justify-center border"
+                  className="w-7 h-7 rounded-full items-center justify-center"
                   style={{
                     backgroundColor: col.hex,
-                    borderColor:
-                      avatarColor.name === col.name ? '#242021' : 'transparent',
                     borderWidth: avatarColor.name === col.name ? 2 : 0,
+                    borderColor: '#242021',
+                    transform: [{ scale: avatarColor.name === col.name ? 1.1 : 1 }],
                   }}
                   activeOpacity={0.8}
                 >
                   {avatarColor.name === col.name && (
-                    <Icon name="checkmark" size={14} color="#ffffff" />
+                    <Icon name="checkmark" size={13} color="#ffffff" />
                   )}
                 </TouchableOpacity>
               ))}
@@ -141,52 +152,52 @@ export default function SettingsScreen() {
           </View>
         </View>
 
-        {/* Name and Email */}
-        <View className="space-y-4">
-          <Input
-            label="Full Name"
-            value={name}
-            onChangeText={setName}
-            placeholder="Your full name"
-            required
-            leftElement={<Icon name="person-outline" size={16} color="#aeabac" />}
-          />
+        {/* Name Input - clean without left icon */}
+        <Input
+          label="Full Name"
+          value={name}
+          onChangeText={setName}
+          placeholder="Your full name"
+          required
+          containerStyle={{ marginBottom: 18 }}
+        />
 
-          <View className="space-y-1">
-            <Text className="text-xs font-bold uppercase tracking-wider text-brand">
-              Email Address
-            </Text>
-            <View className="w-full px-3.5 py-3 rounded-xl border border-muted/30 bg-light/70">
-              <Text className="text-sm font-medium text-gray">
-                {mockUser.email}
-              </Text>
-            </View>
-            <Text className="text-[11px] text-muted">
-              Email cannot be changed here.
+        {/* Email Address Read-only Box */}
+        <View className="w-full" style={{ marginBottom: 24 }}>
+          <Text className="text-xs font-bold uppercase tracking-wider text-brand mb-2">
+            Email Address
+          </Text>
+          <View className="w-full px-3.5 py-3 rounded-xl border border-muted/30 bg-light/70">
+            <Text className="text-sm font-medium text-gray-500">
+              {mockUser.email}
             </Text>
           </View>
+          <Text className="text-xs text-gray-400 mt-1.5">
+            Email cannot be changed here.
+          </Text>
         </View>
 
-        {/* Save Profile Button & Inline Feedback */}
-        <View className="space-y-2 pt-1">
+        {/* Save Profile Button & Member Date Row */}
+        <View className="pt-1">
           <Button
             variant="primary"
             isLoading={isSavingProfile}
             onPress={handleSaveProfile}
             size="md"
+            className="w-full sm:w-auto py-3.5"
           >
             Save Profile Changes
           </Button>
 
           {profileSuccessMsg ? (
-            <View className="flex-row items-center justify-center gap-1.5 py-1">
+            <View className="flex-row items-center justify-center gap-1.5 mt-3">
               <Icon name="checkmark-circle" size={16} color="#059669" />
               <Text className="text-xs font-bold text-emerald-700">
                 {profileSuccessMsg}
               </Text>
             </View>
           ) : (
-            <Text className="text-[11px] text-gray text-center">
+            <Text className="text-xs text-gray-500 mt-3 text-center">
               Member since {mockUser.joinedDate}
             </Text>
           )}
@@ -194,16 +205,24 @@ export default function SettingsScreen() {
       </View>
 
       {/* SECTION 2: APP PREFERENCES */}
-      <View className="bg-white p-5 rounded-2xl border border-muted/30 shadow-xs space-y-4">
-        <View className="flex-row items-center gap-2 border-b border-muted/20 pb-3">
-          <Icon name="options-outline" size={18} color="#242021" />
-          <Text className="text-base font-bold text-brand">App Preferences</Text>
+      <View
+        className="bg-white rounded-2xl border border-muted/30 shadow-xs"
+        style={{ padding: 24, marginBottom: 24 }}
+      >
+        <View
+          className="flex-row items-center gap-2 border-b border-muted/20"
+          style={{ paddingBottom: 16, marginBottom: 12 }}
+        >
+          <Icon name="options-outline" size={20} color="#242021" />
+          <Text className="text-lg font-bold text-brand">
+            App Preferences
+          </Text>
         </View>
 
         <View className="divide-y divide-muted/20">
           <Toggle
             label="Email Notifications"
-            description="Receive updates on shared space activity and milestone badges."
+            description="Receive updates about shared spaces, quiz attempts, and community milestones."
             checked={preferences.emailNotifications}
             onChange={(val) =>
               setPreferences((prev) => ({ ...prev, emailNotifications: val }))
@@ -212,7 +231,7 @@ export default function SettingsScreen() {
 
           <Toggle
             label="Study Streak Reminders"
-            description="Daily notifications to keep your active study streak going strong."
+            description="Get daily notifications to keep your active study streak going strong."
             checked={preferences.studyReminders}
             onChange={(val) =>
               setPreferences((prev) => ({ ...prev, studyReminders: val }))
@@ -238,18 +257,19 @@ export default function SettingsScreen() {
           />
         </View>
 
-        <View className="space-y-2 pt-2">
+        <View style={{ paddingTop: 20 }}>
           <Button
-            variant="secondary"
+            variant="primary"
             isLoading={isSavingPrefs}
             onPress={handleSavePreferences}
             size="md"
+            className="w-full sm:w-auto py-3.5"
           >
             Save Preferences
           </Button>
 
           {prefsSuccessMsg ? (
-            <View className="flex-row items-center justify-center gap-1.5 py-1">
+            <View className="flex-row items-center justify-center gap-1.5 mt-3">
               <Icon name="checkmark-circle" size={16} color="#059669" />
               <Text className="text-xs font-bold text-emerald-700">
                 {prefsSuccessMsg}
@@ -260,50 +280,67 @@ export default function SettingsScreen() {
       </View>
 
       {/* SECTION 3: DANGER ZONE */}
-      <View className="bg-rose-50/40 p-5 rounded-2xl border border-rose-200/80 shadow-xs space-y-3">
-        <View className="flex-row items-center gap-2 border-b border-rose-200/60 pb-3">
-          <Icon name="warning-outline" size={18} color="#e11d48" />
-          <Text className="text-base font-bold text-rose-900">Danger Zone</Text>
+      <View
+        className="bg-rose-50/40 rounded-2xl border border-rose-200/80 shadow-xs"
+        style={{ padding: 24, marginBottom: 24 }}
+      >
+        <View
+          className="flex-row items-center gap-2 border-b border-rose-200/60"
+          style={{ paddingBottom: 16, marginBottom: 16 }}
+        >
+          <Icon name="warning-outline" size={20} color="#e11d48" />
+          <Text className="text-lg font-bold text-rose-900">
+            Danger Zone
+          </Text>
         </View>
 
-        <Text className="text-xs text-rose-700 leading-relaxed">
-          Permanently remove your account, study spaces, flashcard decks, and quiz attempt records. This action cannot be undone.
-        </Text>
-
-        {!showDeleteConfirm ? (
-          <Button
-            variant="danger"
-            size="sm"
-            onPress={() => setShowDeleteConfirm(true)}
-            className="self-start"
-          >
+        <View>
+          <Text className="text-sm font-bold text-rose-900 mb-1">
             Delete Account
-          </Button>
-        ) : (
-          <View className="p-3.5 rounded-xl bg-white border border-rose-200 space-y-3">
-            <Text className="text-xs font-bold text-rose-900">
-              Are you sure? This action is irreversible.
-            </Text>
-            <View className="flex-row items-center gap-2">
-              <Button
-                variant="secondary"
-                size="sm"
-                onPress={() => setShowDeleteConfirm(false)}
-                className="flex-1"
-              >
-                Cancel Keep Account
-              </Button>
-              <Button
-                variant="danger"
-                size="sm"
-                onPress={handleDeleteAccount}
-                className="flex-1"
-              >
-                Confirm Delete Account
-              </Button>
+          </Text>
+          <Text className="text-xs text-rose-700/80 leading-relaxed mb-4">
+            Permanently remove your account, study spaces, flashcard decks, and quiz attempt records. This action cannot be undone.
+          </Text>
+
+          {!showDeleteConfirm ? (
+            <TouchableOpacity
+              onPress={() => setShowDeleteConfirm(true)}
+              activeOpacity={0.8}
+              className="bg-rose-600 active:bg-rose-700 py-2.5 px-4 rounded-xl self-start"
+            >
+              <Text className="text-xs font-bold text-white">
+                Delete Account
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <View
+              className="rounded-xl bg-white border border-rose-200"
+              style={{ padding: 16, marginTop: 8 }}
+            >
+              <Text className="text-xs font-bold text-rose-900 mb-3">
+                Are you sure? All your study spaces, summaries, and quizzes will be erased immediately.
+              </Text>
+              <View className="flex-row items-center gap-2.5">
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onPress={() => setShowDeleteConfirm(false)}
+                  className="flex-1 py-2.5"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="danger"
+                  size="sm"
+                  onPress={handleDeleteAccount}
+                  className="flex-1 py-2.5"
+                >
+                  Confirm Delete
+                </Button>
+              </View>
             </View>
-          </View>
-        )}
+          )}
+        </View>
       </View>
     </ScrollView>
   );

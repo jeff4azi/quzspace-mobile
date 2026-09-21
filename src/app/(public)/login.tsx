@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
   Image,
   TouchableOpacity,
-  KeyboardAvoidingView,
   ScrollView,
   Platform,
   Alert,
@@ -15,9 +14,12 @@ import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { GoogleIcon } from '@/components/ui/GoogleIcon';
 import { Icon } from '@/components/ui/Icon';
+import { useKeyboardHeight } from '@/components/ui/KeyboardAwareLayout';
 
 export default function LoginScreen() {
   const router = useRouter();
+  const scrollViewRef = useRef<ScrollView>(null);
+  const keyboardHeight = useKeyboardHeight();
 
   const [formData, setFormData] = useState({
     email: '',
@@ -85,164 +87,169 @@ export default function LoginScreen() {
     );
   };
 
+  const scrollToInput = (yOffset: number) => {
+    setTimeout(() => {
+      scrollViewRef.current?.scrollTo({ y: yOffset, animated: true });
+    }, 120);
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-light">
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        className="flex-1"
+      <ScrollView
+        ref={scrollViewRef}
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingVertical: 24,
+          paddingHorizontal: 16,
+          paddingBottom: keyboardHeight > 0 ? keyboardHeight + 60 : 40,
+        }}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
       >
-        <ScrollView
-          contentContainerStyle={{
-            flexGrow: 1,
-            justifyContent: 'center',
-            paddingVertical: 24,
-            paddingHorizontal: 16,
-          }}
-          keyboardShouldPersistTaps="handled"
-        >
-          <View className="w-full max-w-md mx-auto">
-            {/* Main Auth Card matching Web version */}
-            <View className="bg-white rounded-2xl shadow-sm border border-muted/30 p-6 sm:p-8">
-              {/* Header Section: Logo + Title + Subtitle */}
-              <View className="items-center mb-6">
-                <Image
-                  source={require('@/assets/images/Quzspace_logo.png')}
-                  className="w-12 h-12 mb-3"
-                  resizeMode="contain"
-                />
-                <Text className="text-2xl sm:text-3xl font-extrabold text-brand tracking-tight text-center mb-1.5">
-                  Welcome back
-                </Text>
-                <Text className="text-sm text-gray leading-relaxed text-center px-2">
-                  Log in to access your personalized AI study workspace.
-                </Text>
-              </View>
+        <View className="w-full max-w-md mx-auto my-auto">
+          {/* Main Auth Card matching Web version */}
+          <View className="bg-white rounded-2xl shadow-sm border border-muted/30 p-6 sm:p-8">
+            {/* Header Section: Logo + Title + Subtitle */}
+            <View className="items-center mb-6">
+              <Image
+                source={require('@/assets/images/Quzspace_logo.png')}
+                className="w-12 h-12 mb-3"
+                resizeMode="contain"
+              />
+              <Text className="text-2xl sm:text-3xl font-extrabold text-brand tracking-tight text-center mb-1.5">
+                Welcome back
+              </Text>
+              <Text className="text-sm text-gray leading-relaxed text-center px-2">
+                Log in to access your personalized AI study workspace.
+              </Text>
+            </View>
 
-              {/* Decorative Google Button */}
-              <Button
-                variant="google"
-                fullWidth
-                onPress={handleGoogleSignIn}
-                leftIcon={<GoogleIcon size={18} />}
-                className="py-3.5"
-              >
-                Continue with Google
-              </Button>
+            {/* Decorative Google Button */}
+            <Button
+              variant="google"
+              fullWidth
+              onPress={handleGoogleSignIn}
+              leftIcon={<GoogleIcon size={18} />}
+              className="py-3.5"
+            >
+              Continue with Google
+            </Button>
 
-              {/* Divider */}
-              <View
-                className="relative flex-row items-center justify-center"
-                style={{ marginVertical: 20 }}
-              >
-                <View className="flex-1 h-[1px] bg-muted/20" />
-                <Text className="px-3 text-xs uppercase tracking-wider text-muted font-bold bg-white">
-                  or
-                </Text>
-                <View className="flex-1 h-[1px] bg-muted/20" />
-              </View>
+            {/* Divider */}
+            <View
+              className="relative flex-row items-center justify-center"
+              style={{ marginVertical: 20 }}
+            >
+              <View className="flex-1 h-[1px] bg-muted/20" />
+              <Text className="px-3 text-xs uppercase tracking-wider text-muted font-bold bg-white">
+                or
+              </Text>
+              <View className="flex-1 h-[1px] bg-muted/20" />
+            </View>
 
-              {/* Form Content */}
-              <View>
-                {/* Email Address */}
+            {/* Form Content */}
+            <View>
+              {/* Email Address */}
+              <Input
+                label="Email Address"
+                value={formData.email}
+                onChangeText={(val) => handleInputChange('email', val)}
+                onFocus={() => scrollToInput(120)}
+                onBlur={() =>
+                  setErrors((prev) => ({
+                    ...prev,
+                    email: validateEmail(formData.email),
+                  }))
+                }
+                placeholder="you@example.com"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                autoCorrect={false}
+                error={errors.email}
+                required
+                containerStyle={{ marginBottom: 18 }}
+              />
+
+              {/* Password Input with Forgot Password link in header row */}
+              <View className="w-full flex-col" style={{ marginBottom: 22 }}>
+                <View className="flex-row items-center justify-between mb-2">
+                  <Text className="text-xs font-bold uppercase tracking-wider text-brand">
+                    Password <Text className="text-rose-500">*</Text>
+                  </Text>
+                  <TouchableOpacity
+                    onPress={handleForgotPassword}
+                    activeOpacity={0.7}
+                  >
+                    <Text className="text-xs font-semibold text-gray">
+                      Forgot password?
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+
                 <Input
-                  label="Email Address"
-                  value={formData.email}
-                  onChangeText={(val) => handleInputChange('email', val)}
+                  value={formData.password}
+                  onChangeText={(val) => handleInputChange('password', val)}
+                  onFocus={() => scrollToInput(220)}
                   onBlur={() =>
                     setErrors((prev) => ({
                       ...prev,
-                      email: validateEmail(formData.email),
+                      password: validatePassword(formData.password),
                     }))
                   }
-                  placeholder="you@example.com"
-                  keyboardType="email-address"
+                  placeholder="••••••••"
+                  secureTextEntry={!showPassword}
                   autoCapitalize="none"
-                  autoCorrect={false}
-                  error={errors.email}
-                  required
-                  containerStyle={{ marginBottom: 18 }}
-                />
-
-                {/* Password Input with Forgot Password link in header row */}
-                <View className="w-full flex-col" style={{ marginBottom: 22 }}>
-                  <View className="flex-row items-center justify-between mb-2">
-                    <Text className="text-xs font-bold uppercase tracking-wider text-brand">
-                      Password <Text className="text-rose-500">*</Text>
-                    </Text>
+                  error={errors.password}
+                  containerStyle={{ marginBottom: 0 }}
+                  rightElement={
                     <TouchableOpacity
-                      onPress={handleForgotPassword}
+                      onPress={() => setShowPassword(!showPassword)}
+                      className="p-1"
                       activeOpacity={0.7}
                     >
-                      <Text className="text-xs font-semibold text-gray">
-                        Forgot password?
-                      </Text>
+                      <Icon
+                        name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+                        size={18}
+                        color="#5d5a5b"
+                      />
                     </TouchableOpacity>
-                  </View>
-
-                  <Input
-                    value={formData.password}
-                    onChangeText={(val) => handleInputChange('password', val)}
-                    onBlur={() =>
-                      setErrors((prev) => ({
-                        ...prev,
-                        password: validatePassword(formData.password),
-                      }))
-                    }
-                    placeholder="••••••••"
-                    secureTextEntry={!showPassword}
-                    autoCapitalize="none"
-                    error={errors.password}
-                    containerStyle={{ marginBottom: 0 }}
-                    rightElement={
-                      <TouchableOpacity
-                        onPress={() => setShowPassword(!showPassword)}
-                        className="p-1"
-                        activeOpacity={0.7}
-                      >
-                        <Icon
-                          name={showPassword ? 'eye-off-outline' : 'eye-outline'}
-                          size={18}
-                          color="#5d5a5b"
-                        />
-                      </TouchableOpacity>
-                    }
-                  />
-                </View>
-
-                {/* Submit Button */}
-                <Button
-                  variant="primary"
-                  fullWidth
-                  size="lg"
-                  isLoading={isLoading}
-                  onPress={handleSubmit}
-                  className="py-3.5"
-                  style={{ marginTop: 4 }}
-                >
-                  Log In
-                </Button>
+                  }
+                />
               </View>
 
-              {/* Footer switch link */}
-              <View
-                className="border-t border-muted/20 flex-row items-center justify-center gap-1.5"
-                style={{ marginTop: 24, paddingTop: 20 }}
+              {/* Submit Button */}
+              <Button
+                variant="primary"
+                fullWidth
+                size="lg"
+                isLoading={isLoading}
+                onPress={handleSubmit}
+                className="py-3.5"
+                style={{ marginTop: 4 }}
               >
-                <Text className="text-sm text-gray font-normal">
-                  Don't have an account?
-                </Text>
-                <Link href="/(public)/signup" asChild>
-                  <TouchableOpacity activeOpacity={0.7}>
-                    <Text className="text-sm font-bold text-brand underline">
-                      Sign up
-                    </Text>
-                  </TouchableOpacity>
-                </Link>
-              </View>
+                Log In
+              </Button>
+            </View>
+
+            {/* Footer switch link */}
+            <View
+              className="border-t border-muted/20 flex-row items-center justify-center gap-1.5"
+              style={{ marginTop: 24, paddingTop: 20 }}
+            >
+              <Text className="text-sm text-gray font-normal">
+                Don't have an account?
+              </Text>
+              <Link href="/(public)/signup" asChild>
+                <TouchableOpacity activeOpacity={0.7}>
+                  <Text className="text-sm font-bold text-brand underline">
+                    Sign up
+                  </Text>
+                </TouchableOpacity>
+              </Link>
             </View>
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }

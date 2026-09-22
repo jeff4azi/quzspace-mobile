@@ -5,8 +5,10 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
+  Keyboard,
+  Platform,
+  Animated,
 } from "react-native";
-import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Icon } from "@/components/ui/Icon";
 import { ChatMessage } from "@/components/study-space/ChatMessage";
@@ -18,18 +20,14 @@ import {
   cannedResponses,
 } from "@/data/mockChatMessages";
 
-import { useKeyboardState } from "react-native-keyboard-controller";
-
 export default function SpaceChatTab() {
   const insets = useSafeAreaInsets();
   const [messages, setMessages] = useState<ChatMessageItem[]>(mockChatMessages);
   const [inputText, setInputText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
-
-
-  const kb = useKeyboardState();
-  console.log("KEYBOARD STATE:", kb);
+  const keyboardHeightAnim = useRef(new Animated.Value(0)).current;
   
   const scrollToBottom = (animated = true) => {
     setTimeout(() => {
@@ -39,6 +37,34 @@ export default function SpaceChatTab() {
 
   useEffect(() => {
     scrollToBottom(false);
+
+    const showEvent = Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow';
+    const hideEvent = Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide';
+
+    const showSub = Keyboard.addListener(showEvent, (e) => {
+      setIsKeyboardVisible(true);
+      const height = e.endCoordinates ? e.endCoordinates.height : 0;
+      Animated.timing(keyboardHeightAnim, {
+        toValue: height,
+        duration: Platform.OS === 'ios' ? (e.duration || 250) : 100,
+        useNativeDriver: false,
+      }).start();
+      scrollToBottom(true);
+    });
+
+    const hideSub = Keyboard.addListener(hideEvent, (e) => {
+      setIsKeyboardVisible(false);
+      Animated.timing(keyboardHeightAnim, {
+        toValue: 0,
+        duration: Platform.OS === 'ios' ? ((e && e.duration) || 250) : 100,
+        useNativeDriver: false,
+      }).start();
+    });
+
+    return () => {
+      showSub.remove();
+      hideSub.remove();
+    };
   }, []);
 
   const handleSend = (textToSend?: string) => {
@@ -84,10 +110,12 @@ export default function SpaceChatTab() {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior="padding"
-      style={{ flex: 1, backgroundColor: "#f1f1f1" }}
-      contentContainerStyle={{ flex: 1 }}
+    <Animated.View
+      style={{
+        flex: 1,
+        backgroundColor: '#f1f1f1',
+        paddingBottom: keyboardHeightAnim,
+      }}
     >
       {/* Header Info Bar */}
       <View className="flex-row items-center justify-between px-5 py-2.5 bg-white border-b border-muted/20">
@@ -137,7 +165,7 @@ export default function SpaceChatTab() {
         style={{
           paddingHorizontal: 16,
           paddingTop: 10,
-          paddingBottom: Math.max(insets.bottom, 12) + 4,
+          paddingBottom: isKeyboardVisible ? 12 : Math.max(insets.bottom, 12) + 6,
           backgroundColor: "#ffffff",
           borderTopWidth: 1,
           borderTopColor: "rgba(174, 171, 172, 0.25)",
@@ -197,6 +225,6 @@ export default function SpaceChatTab() {
           </TouchableOpacity>
         </View>
       </View>
-    </KeyboardAvoidingView>
+    </Animated.View>
   );
 }

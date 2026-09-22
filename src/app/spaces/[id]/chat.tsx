@@ -18,12 +18,18 @@ import {
   cannedResponses,
 } from "@/data/mockChatMessages";
 
+import { useKeyboardState } from "react-native-keyboard-controller";
+
 export default function SpaceChatTab() {
   const insets = useSafeAreaInsets();
   const [messages, setMessages] = useState<ChatMessageItem[]>(mockChatMessages);
   const [inputText, setInputText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
+
+
+  const kb = useKeyboardState();
+  console.log("KEYBOARD STATE:", kb);
   
   const scrollToBottom = (animated = true) => {
     setTimeout(() => {

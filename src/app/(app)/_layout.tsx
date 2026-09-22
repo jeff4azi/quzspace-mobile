@@ -12,7 +12,7 @@ export default function AppLayout() {
   // Dynamic bottom padding: handles devices with gesture pill (insets.bottom > 0)
   // as well as 3-button navigation / older devices where insets.bottom is 0.
   const bottomPadding = insets.bottom > 0 ? insets.bottom : 14;
-  const tabHeight = 45 + bottomPadding;
+  const tabHeight = 52 + bottomPadding;
 
   return (
     <View className="flex-1 bg-light">
@@ -27,7 +27,7 @@ export default function AppLayout() {
             borderTopColor: 'rgba(174, 171, 172, 0.25)',
             borderTopWidth: 1,
             height: tabHeight,
-            paddingTop: 2,
+            paddingTop: 0,
             paddingBottom: bottomPadding,
             elevation: 8,
             shadowColor: '#000',
@@ -70,7 +70,7 @@ export default function AppLayout() {
               <TouchableOpacity
                 onPress={props.onPress}
                 accessibilityState={props.accessibilityState}
-                className="flex-1 items-center justify-center -top-2"
+                className="flex-1 items-center justify-center -top-3"
                 activeOpacity={0.85}
               >
                 <View

@@ -25,6 +25,7 @@ export interface QuizItem {
   createdAt: string;
   bestScore: number | null;
   attemptsCount: number;
+  selectedTopics?: string[];
   history: QuizAttempt[];
   leaderboard: LeaderboardEntry[];
 }
@@ -90,6 +91,7 @@ export const mockQuizzes: QuizItem[] = [
     title: 'Subnetting & IPv4 Address Calculation',
     questionCount: 10,
     difficulty: 'Hard',
+    selectedTopics: ['Subnetting & CIDR', 'IPv4 Addressing'],
     createdAt: 'Yesterday',
     bestScore: 90,
     attemptsCount: 3,
@@ -146,6 +148,7 @@ export const mockQuizzes: QuizItem[] = [
     title: 'TCP vs UDP & Transport Layer Mechanics',
     questionCount: 8,
     difficulty: 'Easy',
+    selectedTopics: ['TCP Handshake', 'TCP Flow Control', 'UDP Datagrams'],
     createdAt: 'Aug 10, 2026',
     bestScore: null,
     attemptsCount: 0,
@@ -157,6 +160,7 @@ export const mockQuizzes: QuizItem[] = [
     title: 'Network Security & Wireless Fundamentals',
     questionCount: 8,
     difficulty: 'Mixed',
+    selectedTopics: ['Network Security Basics', 'Wireless Fundamentals'],
     createdAt: 'Aug 05, 2026',
     bestScore: 70,
     attemptsCount: 1,

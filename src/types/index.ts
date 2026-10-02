@@ -22,6 +22,7 @@ export interface Quiz {
   spaceId: string;
   title: string;
   totalQuestions: number;
+  selectedTopics?: string[];
   bestScore?: number;
   lastScore?: number;
   createdAt: string;

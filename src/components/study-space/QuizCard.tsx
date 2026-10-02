@@ -182,6 +182,57 @@ export function QuizCard({ quiz, spaceId = 'cs-301', onDelete }: QuizCardProps) 
           {quiz.title}
         </Text>
 
+        {Array.isArray(quiz.selectedTopics) && quiz.selectedTopics.length > 0 && (
+          <View className="flex-row flex-wrap gap-1.5 mb-2.5">
+            {quiz.selectedTopics.slice(0, 3).map((t) => (
+              <View
+                key={t}
+                style={{
+                  backgroundColor: 'rgba(36, 32, 33, 0.06)',
+                  borderWidth: 1,
+                  borderColor: 'rgba(36, 32, 33, 0.15)',
+                  paddingHorizontal: 8,
+                  paddingVertical: 3,
+                  borderRadius: 999,
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 10,
+                    fontWeight: '800',
+                    color: '#242021',
+                    opacity: 0.85,
+                  }}
+                >
+                  {t}
+                </Text>
+              </View>
+            ))}
+            {quiz.selectedTopics.length > 3 && (
+              <View
+                style={{
+                  backgroundColor: '#f3f4f6',
+                  borderWidth: 1,
+                  borderColor: 'rgba(174, 171, 172, 0.3)',
+                  paddingHorizontal: 8,
+                  paddingVertical: 3,
+                  borderRadius: 999,
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 10,
+                    fontWeight: '800',
+                    color: '#737373',
+                  }}
+                >
+                  +{quiz.selectedTopics.length - 3}
+                </Text>
+              </View>
+            )}
+          </View>
+        )}
+
         {/* Attempts Metadata */}
         <View className="flex-row items-center gap-3 mb-3">
           {quiz.attemptsCount > 0 ? (

@@ -83,6 +83,7 @@ export default function SpaceQuizTab() {
       onClose={() => setIsGenerateModalOpen(false)}
       onQuizGenerated={handleQuizGenerated}
       currentQuizCount={quizzes.length}
+      spaceId={spaceId}
     />
   </>
   );
